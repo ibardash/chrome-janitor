@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: BarcadeBrawl;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@font-face {
+  font-family: "BarcadeBrawl";
+  src: local("BarcadeBrawl"),
+    url(./BarcadeBrawlRegular-plYD.ttf) format("truetype");
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Chrome Janitor",
+  "description": "Entry for Lexicon Digital Hackathon 2021",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Open the popup"
+  },
+  "icons": {
+    "16": "dino128.png",
+    "48": "dino128.png",
+    "128": "dino128.png"
+  }
+}
