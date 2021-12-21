@@ -4,6 +4,8 @@ Entry for Lexicon Digital Hackathon 2021
 
 Theme: Green Tech
 
+<img width="896" alt="Screen Shot" src="https://user-images.githubusercontent.com/34414677/146991685-e3460497-300b-456f-b60e-95fc0497ee78.png">
+
 ## Development
 
 ### Setup
