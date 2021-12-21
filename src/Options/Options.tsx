@@ -29,10 +29,21 @@ export function Options() {
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{
+          borderRight: 1,
+          borderColor: "divider",
+          fontFamily: "BarcadeBrawl",
+          minWidth: 205,
+        }}
       >
-        <Tab label="Closed Tabs" {...a11yProps(0)} />
-        <Tab label="Settings" {...a11yProps(1)} />
+        <Tab
+          label={<span className="tab-label">Closed Tabs</span>}
+          {...a11yProps(0)}
+        />
+        <Tab
+          label={<span className="tab-label">Settings</span>}
+          {...a11yProps(1)}
+        />
       </Tabs>
       <TabPanel value={value} index={0} header={"closed tabs"}>
         <ClosedTabs />
