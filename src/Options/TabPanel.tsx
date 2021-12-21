@@ -22,8 +22,9 @@ export function TabPanel({
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, paddingTop: 0 }}>
           <p>{header}</p>
+          <br />
           {children ?? null}
         </Box>
       )}

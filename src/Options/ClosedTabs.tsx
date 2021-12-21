@@ -24,8 +24,12 @@ export function ClosedTabs() {
   return (
     <>
       {urls.map(({ id, timestamp }, index) => (
-        <p>{id}</p>
+        <ListItem>{id}</ListItem>
       ))}
     </>
   );
 }
+
+const ListItem = styled.p`
+  font-size: 10px;
+`;
