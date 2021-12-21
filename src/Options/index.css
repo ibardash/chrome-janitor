@@ -11,11 +11,6 @@ body {
   font-family: "BarcadeBrawl" !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
 @font-face {
   font-family: "BarcadeBrawl";
   src: local("BarcadeBrawl"),

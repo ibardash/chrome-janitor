@@ -35,7 +35,6 @@ export function Options() {
           sx={{
             borderRight: 1,
             borderColor: "divider",
-            fontFamily: "BarcadeBrawl",
             minWidth: 205,
           }}
         >
