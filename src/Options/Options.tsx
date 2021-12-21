@@ -1,11 +1,12 @@
-import { ClosedTabs } from "./ClosedTabs";
 import * as React from "react";
+import styled from "styled-components";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { ClosedTabs } from "./ClosedTabs";
 import { TabPanel } from "./TabPanel";
 import { Banner } from "./Banner";
-import styled from "styled-components";
+import { Settings } from "./Settings";
 
 export function Options() {
   const [value, setValue] = React.useState(0);
@@ -50,7 +51,9 @@ export function Options() {
         <TabPanel value={value} index={0} header={"closed tabs"}>
           <ClosedTabs />
         </TabPanel>
-        <TabPanel value={value} index={1} header={"settings"}></TabPanel>
+        <TabPanel value={value} index={1} header={"settings"}>
+          <Settings />
+        </TabPanel>
       </Box>
     </Container>
   );
