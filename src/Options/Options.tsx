@@ -1,31 +1,50 @@
-import dino from "../media/dino.gif";
-import styled from "styled-components";
+import { ClosedTabs } from "./ClosedTabs";
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import { TabPanel } from "./TabPanel";
 
 export function Options() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    newValue: any
+  ) => {
+    setValue(newValue);
+  };
+
   return (
-    <Modal>
-      <Header>
-        <Dino src={dino} alt="logo" />
-        Chrome Janitor Options!
-      </Header>
-    </Modal>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: 224,
+      }}
+    >
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleChange}
+        sx={{ borderRight: 1, borderColor: "divider" }}
+      >
+        <Tab label="Closed Tabs" {...a11yProps(0)} />
+        <Tab label="Settings" {...a11yProps(1)} />
+      </Tabs>
+      <TabPanel value={value} index={0} header={"closed tabs"}>
+        <ClosedTabs />
+      </TabPanel>
+      <TabPanel value={value} index={1} header={"settings"}></TabPanel>
+    </Box>
   );
 }
 
-const Modal = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  padding: 20px;
-`;
-
-const Header = styled.header`
-  text-align: center;
-  font-size: calc(10px + 2vmin);
-  color: #454545;
-`;
-
-const Dino = styled.img`
-  width: 100px;
-  height: 100px;
-`;
+export function a11yProps(index: number) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
