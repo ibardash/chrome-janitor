@@ -8,4 +8,5 @@ const getCpuInfo = async () => {
   return cpuInfo;
 };
 
-importScripts('scripts/handleInstallation.js')
+importScripts("scripts/handleInstallation.js");
+importScripts("scripts/handleCloseTab.js");
