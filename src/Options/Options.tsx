@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { TabPanel } from "./TabPanel";
 import { Banner } from "./Banner";
+import styled from "styled-components";
 
 export function Options() {
   const [value, setValue] = React.useState(0);
@@ -17,8 +18,8 @@ export function Options() {
   };
 
   return (
-    <>
-      <Banner />
+    <Container>
+      <Banner style={{ marginBottom: 20 }} />
       <Box
         sx={{
           flexGrow: 1,
@@ -53,7 +54,7 @@ export function Options() {
         </TabPanel>
         <TabPanel value={value} index={1} header={"settings"}></TabPanel>
       </Box>
-    </>
+    </Container>
   );
 }
 
@@ -63,3 +64,7 @@ export function a11yProps(index: number) {
     "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
+
+const Container = styled.div`
+  padding: 20px;
+`;

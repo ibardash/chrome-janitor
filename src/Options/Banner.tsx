@@ -1,30 +1,58 @@
 import styled from "styled-components";
-import dino from "../media/dino.gif";
+import dino from "../media/dino-cropped.gif";
+import { CSSProperties } from "react";
 
-export function Banner() {
+export function Banner({ style }: { style?: CSSProperties }) {
   return (
-    <LogoContainer>
-      <Dino src={dino} alt="logo" />
-      <Header>Chrome Janitor</Header>
-    </LogoContainer>
+    <Container style={style}>
+      <LogoContainer>
+        <Dino src={dino} alt="logo" />
+        <Header>Chrome Janitor</Header>
+      </LogoContainer>
+      <Description>
+        <p>Thanks for trying Chrome Janitor</p>
+        <Details>
+          Cleaning up unused tabs to ensure your browser runs as smooth as
+          possible. <br />
+          You can customise the extension below.
+        </Details>
+      </Description>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  border: #e1dfe0 solid 2px;
+  padding: 20px;
+`;
 
 const LogoContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: #e1dfe0;
   padding: 10px;
-  width: 200px;
+`;
+
+const Description = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
 `;
 
 const Header = styled.header`
   text-align: center;
   font-size: 15px;
   color: #454545;
+  width: 116px;
 `;
 
 const Dino = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
+`;
+
+const Details = styled.p`
+  color: #666666;
 `;
