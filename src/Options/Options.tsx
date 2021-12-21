@@ -4,6 +4,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { TabPanel } from "./TabPanel";
+import { Banner } from "./Banner";
 
 export function Options() {
   const [value, setValue] = React.useState(0);
@@ -16,40 +17,43 @@ export function Options() {
   };
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        bgcolor: "background.paper",
-        display: "flex",
-        height: 224,
-      }}
-    >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
+    <>
+      <Banner />
+      <Box
         sx={{
-          borderRight: 1,
-          borderColor: "divider",
-          fontFamily: "BarcadeBrawl",
-          minWidth: 205,
+          flexGrow: 1,
+          bgcolor: "background.paper",
+          display: "flex",
+          height: 224,
         }}
       >
-        <Tab
-          label={<span className="tab-label">Closed Tabs</span>}
-          {...a11yProps(0)}
-        />
-        <Tab
-          label={<span className="tab-label">Settings</span>}
-          {...a11yProps(1)}
-        />
-      </Tabs>
-      <TabPanel value={value} index={0} header={"closed tabs"}>
-        <ClosedTabs />
-      </TabPanel>
-      <TabPanel value={value} index={1} header={"settings"}></TabPanel>
-    </Box>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          sx={{
+            borderRight: 1,
+            borderColor: "divider",
+            fontFamily: "BarcadeBrawl",
+            minWidth: 205,
+          }}
+        >
+          <Tab
+            label={<span className="tab-label">Closed Tabs</span>}
+            {...a11yProps(0)}
+          />
+          <Tab
+            label={<span className="tab-label">Settings</span>}
+            {...a11yProps(1)}
+          />
+        </Tabs>
+        <TabPanel value={value} index={0} header={"closed tabs"}>
+          <ClosedTabs />
+        </TabPanel>
+        <TabPanel value={value} index={1} header={"settings"}></TabPanel>
+      </Box>
+    </>
   );
 }
 
