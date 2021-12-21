@@ -27,37 +27,38 @@ chrome.tabs.onActivated.addListener(async (tab) => {
 
 chrome.alarms.create("closeTab", {
   delayInMinutes: 0,
-  periodInMinutes: 1,
+  periodInMinutes: 0.3,
 });
 
 chrome.storage.sync.set({ tabsInfo: {} });
 
-const MAX_TIME = 5000;
+const MAX_TIME = 1000;
 
-// chrome.alarms.onAlarm.addListener((alarm) => {
-//   if (alarm.name === "closeTab") {
-//     chrome.storage.sync.get("tabsInfo", function (tabsInfo) {
-//       console.log("on alarm get tabsInfo", tabsInfo);
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  console.log("alarm fired", alarm.name);
 
-//       chrome.tabs.query({}, function (tabs) {
-//         tabs.forEach((tab) => {
-//           const lastActivated = tabsInfo[tab.id].lastActivated;
-//           if (lastActivated !== null) {
-//             if (Date.now - lastActivated > MAX_TIME) {
-//               // remove the tab
-//               chrome.tabs.remove(tab.id);
+  if (alarm.name !== "closeTab") return;
 
-//               // remove the key for tabsInfo
-//               delete tabsInfo[tab.id];
-//             }
-//           }
-//         });
-//       });
+  const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
 
-//       console.log("onAlarm setting tabsInfo", tabsInfo);
+  console.log("on alarm get tabsInfo", tabsInfo);
 
-//       // save tabsInfo back to storage
-//       chrome.storage.sync.set({ tabsInfo });
-//     });
-//   }
-// });
+  chrome.tabs.query({}, function (tabs) {
+    tabs.forEach((tab) => {
+      const lastActivated = tabsInfo[tab.id]?.lastActivated;
+      if (!lastActivated) return;
+
+      const differenceInMillis = Date.now() - lastActivated;
+
+      if (differenceInMillis > MAX_TIME) {
+        chrome.tabs.remove(tab.id);
+        delete tabsInfo[tab.id];
+      }
+    });
+  });
+
+  console.log("onAlarm setting tabsInfo", tabsInfo);
+
+  // save tabsInfo back to storage
+  chrome.storage.sync.set({ tabsInfo });
+});
