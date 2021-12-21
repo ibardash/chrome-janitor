@@ -30,9 +30,18 @@ chrome.alarms.create("closeTab", {
 
 chrome.storage.sync.set({ tabsInfo: {} });
 
-const MAX_TIME = 1000;
-
 chrome.alarms.onAlarm.addListener(async (alarm) => {
+  const DEFAULT_INACTIVITY_PERIOD_MINUTES = 60;
+
+  const { periodOfInactivity: userPeriodOfInactivityMinutes } = await chrome.storage.sync.get(
+    "periodOfInactivity"
+  );
+
+  const inactivityPeriodInMinutes =
+    userPeriodOfInactivityMinutes ?? DEFAULT_INACTIVITY_PERIOD_MINUTES;
+
+  const inactivityPeriodInMilliseconds = inactivityPeriodInMinutes * 60 * 1000;
+
   if (alarm.name !== "closeTab") return;
 
   const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
@@ -44,7 +53,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
       const differenceInMillis = Date.now() - lastActivated;
 
-      if (differenceInMillis > MAX_TIME) {
+      if (differenceInMillis > inactivityPeriodInMilliseconds) {
         chrome.tabs.remove(tab.id);
         delete tabsInfo[tab.id];
       }
