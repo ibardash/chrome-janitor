@@ -12,13 +12,13 @@ export function Settings() {
   // Get and use the stored period of inactivity when mounted
   useEffect(() => {
     async function getStoredPeriod() {
-      const storedPeriodObject = await chrome.storage.sync.get(
-        PERIOD_OF_INACTIVITY_STORAGE_KEY
-      );
+      const storedPeriodObject = (
+        await chrome.storage.sync.get(PERIOD_OF_INACTIVITY_STORAGE_KEY)
+      )[PERIOD_OF_INACTIVITY_STORAGE_KEY];
 
-      if (storedPeriodObject) {
-        setPeriod(storedPeriodObject[PERIOD_OF_INACTIVITY_STORAGE_KEY]);
-      }
+      if (!storedPeriodObject) return;
+
+      setPeriod(storedPeriodObject[PERIOD_OF_INACTIVITY_STORAGE_KEY]);
     }
 
     getStoredPeriod();
@@ -28,9 +28,12 @@ export function Settings() {
     const period = event.target.valueAsNumber;
 
     // Update local state and extension storage
-    setPeriod(period);
-
-    chrome.storage.sync.set({ [PERIOD_OF_INACTIVITY_STORAGE_KEY]: period });
+    try {
+      setPeriod(period);
+      chrome.storage.sync.set({ [PERIOD_OF_INACTIVITY_STORAGE_KEY]: period });
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   return (

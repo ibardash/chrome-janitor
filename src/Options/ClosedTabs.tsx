@@ -21,20 +21,22 @@ export function ClosedTabs() {
 
   return (
     <>
-      {tabs.map(({ url, title, closedAt }, index) => (
-        <ListItem key={index}>
-          <Time>
-            {new Intl.DateTimeFormat("default", {
-              hour: "numeric",
-              minute: "numeric",
-              second: "numeric",
-            }).format(new Date(closedAt))}
-          </Time>
-          <a href={url} target="_blank" rel="noreferrer">
-            {title}
-          </a>
-        </ListItem>
-      ))}
+      {tabs
+        .sort((a, b) => a.closedAt - b.closedAt)
+        .map(({ url, title, closedAt }, index) => (
+          <ListItem key={index}>
+            <Time>
+              {new Intl.DateTimeFormat("default", {
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+              }).format(new Date(closedAt))}
+            </Time>
+            <a href={url} target="_blank" rel="noreferrer">
+              {title}
+            </a>
+          </ListItem>
+        ))}
     </>
   );
 }

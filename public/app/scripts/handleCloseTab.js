@@ -1,6 +1,5 @@
 chrome.tabs.onActivated.addListener(async (tab) => {
-  const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
-  const { closedTabs } = await chrome.storage.sync.get("closedTabs");
+  const tabsInfo = await getFromStorage("tabsInfo");
 
   // set previous active tab active state to false
   const previousActiveTab = Object.keys(tabsInfo).find(
@@ -21,30 +20,43 @@ chrome.tabs.onActivated.addListener(async (tab) => {
   };
 
   // save the updated tab info to storage
-  chrome.storage.sync.set({ tabsInfo, closedTabs });
+  chrome.storage.sync.set({ tabsInfo });
 });
+
+const getFromStorage = async (key) => {
+  const storedData = (await chrome.storage.sync.get(key))[key];
+  const data = storedData || {};
+
+  if (!storedData) {
+    chrome.storage.sync.set({
+      [key]: data,
+    });
+  }
+
+  return data;
+};
 
 chrome.alarms.create("closeTab", {
   delayInMinutes: 0,
-  periodInMinutes: 0.3,
+  periodInMinutes: 1 / 60, // 1 sec
 });
 
-chrome.storage.sync.set({ tabsInfo: {}, closedTabs: {} });
 const DEFAULT_INACTIVITY_PERIOD_MINUTES = 60;
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== "closeTab") return;
 
-  const { periodOfInactivity: userPeriodOfInactivityMinutes } =
-    await chrome.storage.sync.get("periodOfInactivity");
+  const userPeriodOfInactivityMinutes = await getFromStorage(
+    "periodOfInactivity"
+  );
 
   const inactivityPeriodInMinutes =
     userPeriodOfInactivityMinutes ?? DEFAULT_INACTIVITY_PERIOD_MINUTES;
 
   const inactivityPeriodInMilliseconds = inactivityPeriodInMinutes * 60 * 1000;
 
-  const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
-  const { closedTabs } = await chrome.storage.sync.get("closedTabs");
+  const tabsInfo = await getFromStorage("tabsInfo");
+  const closedTabs = await getFromStorage("closedTabs");
 
   const tabs = await chrome.tabs.query({});
 

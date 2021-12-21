@@ -9,6 +9,7 @@ body {
 
 .tab-label {
   font-family: "BarcadeBrawl" !important;
+  align-self: end;
 }
 
 @font-face {
