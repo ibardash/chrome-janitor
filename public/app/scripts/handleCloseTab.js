@@ -4,7 +4,7 @@ chrome.tabs.onActivated.addListener((tab) => {
   chrome.storage.sync.get("tabsInfo", function (tabsInfo) {
     console.log("tabsInfo", tabsInfo);
     // set previous active tab active state to false
-    const previousActiveTab = Object.keys(tabsInfo).filter(
+    const previousActiveTab = Object.keys(tabsInfo).find(
       (key) => tabsInfo[key].isCurrent === true
     );
 
