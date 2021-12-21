@@ -30,9 +30,10 @@ chrome.alarms.create("closeTab", {
 });
 
 chrome.storage.sync.set({ tabsInfo: {}, closedTabs: {} });
+const DEFAULT_INACTIVITY_PERIOD_MINUTES = 60;
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  const DEFAULT_INACTIVITY_PERIOD_MINUTES = 60;
+  if (alarm.name !== "closeTab") return;
 
   const { periodOfInactivity: userPeriodOfInactivityMinutes } =
     await chrome.storage.sync.get("periodOfInactivity");
@@ -41,8 +42,6 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     userPeriodOfInactivityMinutes ?? DEFAULT_INACTIVITY_PERIOD_MINUTES;
 
   const inactivityPeriodInMilliseconds = inactivityPeriodInMinutes * 60 * 1000;
-
-  if (alarm.name !== "closeTab") return;
 
   const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
   const { closedTabs } = await chrome.storage.sync.get("closedTabs");
@@ -54,11 +53,14 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (!lastActivated) return;
 
     const differenceInMillis = Date.now() - lastActivated;
-
     if (differenceInMillis > inactivityPeriodInMilliseconds) {
       chrome.tabs.remove(tab.id);
       delete tabsInfo[tab.id];
-      closedTabs[tab.id] = { url: tab.url, closedAt: Date.now() };
+      closedTabs[tab.id] = {
+        url: tab.url,
+        closedAt: Date.now(),
+        title: tab.title,
+      };
     }
   });
 

@@ -43,6 +43,7 @@ const LogoContainer = styled.div`
   flex-direction: row;
   background-color: #e1dfe0;
   padding: 10px;
+  align-items: center;
 `;
 
 const Description = styled.div`

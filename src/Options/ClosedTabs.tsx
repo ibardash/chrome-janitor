@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export function ClosedTabs() {
-  const [tabs, setTabs] = useState<{ url: string; closedAt: number }[]>([]);
+  const [tabs, setTabs] = useState<
+    { url: string; closedAt: number; title: string }[]
+  >([]);
 
   useEffect(() => {
     async function fetchTabs() {
@@ -19,13 +21,32 @@ export function ClosedTabs() {
 
   return (
     <>
-      {tabs.map(({ url }, index) => (
-        <ListItem key={index}>{url}</ListItem>
+      {tabs.map(({ url, title, closedAt }, index) => (
+        <ListItem key={index}>
+          <Time>
+            {new Intl.DateTimeFormat("default", {
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+            }).format(new Date(closedAt))}
+          </Time>
+          <a href={url} target="_blank" rel="noreferrer">
+            {title}
+          </a>
+        </ListItem>
       ))}
     </>
   );
 }
 
-const ListItem = styled.p`
+const ListItem = styled.div`
   font-size: 10px;
+  line-height: 20px;
+  display: flex;
+  flex-direction: row;
+`;
+
+const Time = styled.div`
+  color: #666666;
+  margin-right: 20px;
 `;
