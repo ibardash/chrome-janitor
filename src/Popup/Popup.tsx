@@ -1,8 +1,17 @@
 import styled from "styled-components";
 import { Button } from "./components/Button";
 import dino from "../media/dino.gif";
+import { useEffect, useState } from "react";
+
+const getMemory = async () => {
+  const memory = await chrome.storage.sync.get("memory");
+  const memoryInUseMb = memory.memorySaved;
+  return memoryInUseMb;
+};
 
 export function Popup() {
+  const [memory, setMemory] = useState("loading...");
+
   const handleOptionsClick = () => {
     chrome.tabs.create({
       url: "options.html",
@@ -10,13 +19,21 @@ export function Popup() {
     });
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getMemory().then((memory) => setMemory(memory));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Modal>
       <Header>
         <Dino src={dino} alt="logo" />
         Chrome Janitor
       </Header>
-
+      <h1>Saved: {memory}MB</h1>
       <Button onClick={handleOptionsClick}>Options</Button>
     </Modal>
   );

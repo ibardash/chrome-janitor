@@ -30,7 +30,7 @@ chrome.alarms.create("closeTab", {
 
 chrome.storage.sync.set({ tabsInfo: {} });
 
-const MAX_TIME = 1000;
+const MAX_TIME = 2000;
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== "closeTab") return;
@@ -38,15 +38,26 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   const { tabsInfo } = await chrome.storage.sync.get("tabsInfo");
 
   chrome.tabs.query({}, function (tabs) {
-    tabs.forEach((tab) => {
+    tabs.forEach(async (tab) => {
       const lastActivated = tabsInfo[tab.id]?.lastActivated;
       if (!lastActivated) return;
 
       const differenceInMillis = Date.now() - lastActivated;
 
       if (differenceInMillis > MAX_TIME) {
+        const mem = await chrome.storage.sync.get("memory")
+        if(!mem){ 
+          setMemoryBeforeClosed({
+            memorySaved: 0,
+            memoryBeforeClosed: 0,
+          })
+        } else {
+          setMemoryBeforeClosed(mem.memory)
+        }
         chrome.tabs.remove(tab.id);
         delete tabsInfo[tab.id];
+        const currentMemory = await chrome.storage.sync.get("memory")
+        await setMemorySaved(currentMemory.memory);
       }
     });
   });
@@ -54,3 +65,39 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   // save tabsInfo back to storage
   chrome.storage.sync.set({ tabsInfo });
 });
+
+const setMemoryBeforeClosed = (memory) => {
+  chrome.storage.sync.set({
+    "memory": {
+      ...memory,
+      memoryBeforeClosed: getMemoryInUse()
+    }
+  })
+}
+
+const getMemoryInUse = async () => {
+  try {
+    const memory = await chrome.system.memory.getInfo()
+    const memoryInUse = memory.capacity - memory.availableCapacity
+    const memoryInUseMb = memoryInUse / (1024 * 1024)
+    return memoryInUseMb;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const setMemorySaved = async (memory) => {
+  try {
+    const memoryInUse = await getMemoryInUse()
+    console.log(memoryInUse);
+    console.log(memory);
+    chrome.storage.sync.set({
+      "memory": {
+        ...memory,
+        memorySaved: memory.memorySaved + (memory.memoryBeforeClosed - memoryInUse),
+      }
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+}
