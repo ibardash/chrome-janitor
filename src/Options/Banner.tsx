@@ -16,6 +16,16 @@ export function Banner({ style }: { style?: CSSProperties }) {
           possible. <br />
           You can customise the extension below.
         </Details>
+
+        <Details>
+          <a
+            href="https://chrome-janitor.odoo.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            About us
+          </a>
+        </Details>
       </Description>
     </Container>
   );
