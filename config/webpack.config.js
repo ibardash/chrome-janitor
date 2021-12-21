@@ -209,6 +209,11 @@ module.exports = function (webpackEnv) {
           require.resolve("react-dev-utils/webpackHotDevClient"),
         paths.appSrc + "/Options/index.tsx",
       ].filter(Boolean),
+      popup: [
+        isEnvDevelopment &&
+          require.resolve("react-dev-utils/webpackHotDevClient"),
+        paths.appSrc + "/Popup/index.tsx",
+      ].filter(Boolean),
     },
     output: {
       // The build folder.
@@ -609,6 +614,33 @@ module.exports = function (webpackEnv) {
             chunks: ["options"],
             template: paths.appOptionsHtml,
             filename: "options.html",
+          },
+          isEnvProduction
+            ? {
+                minify: {
+                  removeComments: true,
+                  collapseWhitespace: true,
+                  removeRedundantAttributes: true,
+                  useShortDoctype: true,
+                  removeEmptyAttributes: true,
+                  removeStyleLinkTypeAttributes: true,
+                  keepClosingSlash: true,
+                  minifyJS: true,
+                  minifyCSS: true,
+                  minifyURLs: true,
+                },
+              }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {},
+          {
+            inject: true,
+            chunks: ["popup"],
+            template: paths.appPopupHtml,
+            filename: "popup.html",
           },
           isEnvProduction
             ? {

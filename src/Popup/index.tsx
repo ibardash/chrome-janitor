@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Options } from "./Options";
+import { Popup } from "./Popup";
 import { reportWebVitals } from "../utils";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Options />
+    <Popup />
   </React.StrictMode>,
   document.getElementById("root")
 );

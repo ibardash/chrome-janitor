@@ -14,5 +14,5 @@ code {
 @font-face {
   font-family: "BarcadeBrawl";
   src: local("BarcadeBrawl"),
-    url(../BarcadeBrawlRegular-plYD.ttf) format("truetype");
+    url(../media/BarcadeBrawlRegular-plYD.ttf) format("truetype");
 }

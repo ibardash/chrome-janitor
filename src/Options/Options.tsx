@@ -1,7 +1,7 @@
-import dino from "../dino.gif";
+import dino from "../media/dino.gif";
 import styled from "styled-components";
 
-function Options() {
+export function Options() {
   return (
     <Modal>
       <Header>
@@ -29,5 +29,3 @@ const Dino = styled.img`
   width: 100px;
   height: 100px;
 `;
-
-export default Options;
