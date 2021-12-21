@@ -1,13 +1,23 @@
-import dino from "../media/dino.gif";
 import styled from "styled-components";
+import { Button } from "./components/Button";
+import dino from "../media/dino.gif";
 
 export function Popup() {
+  const handleOptionsClick = () => {
+    chrome.tabs.create({
+      url: "options.html",
+      active: true,
+    });
+  };
+
   return (
     <Modal>
       <Header>
         <Dino src={dino} alt="logo" />
         Chrome Janitor
       </Header>
+
+      <Button onClick={handleOptionsClick}>Options</Button>
     </Modal>
   );
 }
