@@ -1,54 +1,26 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export function ClosedTabs() {
-  const urls = [
-    {
-      id: "https://developer.chrome.com/docs/extensions/reference/storage/",
-      timestamp: 1640050336824,
-    },
-    {
-      id: "https://developer.chrome.com/docs/extensions/mv3/options/",
-      timestamp: 1640050337824,
-    },
-    {
-      id: "https://stackoverflow.com/questions/14584781/how-do-you-link-to-the-options-page-in-a-chrome-extension",
-      timestamp: 1640050337924,
-    },
-    {
-      id: "https://developer.chrome.com/docs/extensions/reference/storage/",
-      timestamp: 1640050336824,
-    },
-    {
-      id: "https://developer.chrome.com/docs/extensions/mv3/options/",
-      timestamp: 1640050337824,
-    },
-    {
-      id: "https://stackoverflow.com/questions/14584781/how-do-you-link-to-the-options-page-in-a-chrome-extension",
-      timestamp: 1640050337924,
-    },
-    {
-      id: "https://developer.chrome.com/docs/extensions/reference/storage/",
-      timestamp: 1640050336824,
-    },
-    {
-      id: "https://developer.chrome.com/docs/extensions/mv3/options/",
-      timestamp: 1640050337824,
-    },
-    {
-      id: "https://stackoverflow.com/questions/14584781/how-do-you-link-to-the-options-page-in-a-chrome-extension",
-      timestamp: 1640050337924,
-    },
-  ];
+  const [tabs, setTabs] = useState<{ url: string; closedAt: number }[]>([]);
 
-  // replace the above with this:
-  //   chrome.storage.sync.get(['key'], function(result) {
-  //     console.log('Value currently is ' + result.key);
-  //   });
+  useEffect(() => {
+    async function fetchTabs() {
+      const { closedTabs } = await chrome.storage.sync.get("closedTabs");
+      setTabs(Object.values(closedTabs));
+    }
+
+    const interval = setInterval(() => {
+      fetchTabs();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
-      {urls.map(({ id, timestamp }, index) => (
-        <ListItem>{id}</ListItem>
+      {tabs.map(({ url }, index) => (
+        <ListItem key={index}>{url}</ListItem>
       ))}
     </>
   );

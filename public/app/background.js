@@ -1,6 +1,4 @@
-chrome.tabs.onActivated.addListener((tab) => {
-  console.log("tab is active");
-});
+chrome.tabs.onActivated.addListener((tab) => {});
 
 importScripts(
   "scripts/handleInstallation.js",
