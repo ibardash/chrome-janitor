@@ -10,10 +10,8 @@
   "background": {
     "service_worker": "app/background.js"
   },
-  "permissions": [
-    "system.cpu",
-    "tabs"
-  ],
+  "permissions": ["system.cpu", "tabs"],
+  "options_page": "options.html",
   "icons": {
     "16": "dino128.png",
     "48": "dino128.png",
