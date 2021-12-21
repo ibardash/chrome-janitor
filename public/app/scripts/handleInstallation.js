@@ -1,6 +1,8 @@
+const WEBSITE_URL = "https://chrome-janitor.odoo.com/";
+
 const handleInstallation = () => {
   chrome.tabs.create({
-    url: 'introduction.html',
+    url: WEBSITE_URL,
     active: true,
   })
 }
