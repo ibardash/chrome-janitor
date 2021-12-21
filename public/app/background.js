@@ -5,5 +5,7 @@ chrome.tabs.onActivated.addListener((tab) => {
 
 const getCpuInfo = async () => {
   const cpuInfo = await chrome.system.cpu.getInfo();
-  return cpuInfo
-}
+  return cpuInfo;
+};
+
+importScripts('scripts/handleInstallation.js')
